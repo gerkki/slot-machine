@@ -1,0 +1,46 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('../Fonts/Montserrat-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+}
+
+:root {
+    --bg-color-gradient: linear-gradient(135deg, #0f3d28, #227753);
+    --bg-image: url(https://images.unsplash.com/photo-1446669052213-5dcff53f1f3f?q=80&w=1746&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);
+    --text-regular: 18px;
+    --text-color: #333333;
+    --global-font: 'Montserrat';
+}
+
+body {
+    background: var(--bg-image);
+    background-size: cover;
+    font-size: var(--text-regular);
+    color: var(--text-color);
+    font-family: var(--global-font);
+}
+
+#login-section {
+    display: flex;
+    justify-content: center;
+}
+
+.login-details {
+    background: var(--bg-color-gradient);
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    padding: 40px;
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-buttons {
+    margin-top: 25px;
+    font-family: var(--global-font);
+    font-size: var(--text-regular);
+    border-radius: 10px;
+    background-color: lightgreen;
+}
