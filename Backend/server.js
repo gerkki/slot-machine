@@ -1,7 +1,8 @@
 async function handler(request) {
+    const url = new URL(request.url);
 
     const headersCors = new Headers();
-    headersCors.set("Content-Type", "application/json")
+    headersCors.set("Content-Type", "application/json");
     headersCors.set("Access-Control-Allow-Origin", "*");
     headersCors.set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS, PATCH, PUT");
     headersCors.set("Access-Control-Allow-Headers", "Content-Type");
@@ -13,7 +14,46 @@ async function handler(request) {
         });
     }
 
-    const url = new URL(request.url);
+    if (url.pathname === "/login") {
+        console.log("HEJ");
+
+        if (request.method === "POST") {
+
+            const jsonFile = await Deno.readTextFile("./database.json");
+            let userDatabase = await JSON.parse(jsonFile);
+
+            const user = await request.json();
+
+            if (user.username === "" || user.password === "") {
+                return new Response(JSON.stringify({ message: "Missing username or password" }), {
+                    status: 400,
+                    headers: headersCors
+                });
+            }
+
+            const existingUser = userDatabase.find(
+                u => u.username === user.username && u.password === user.password
+            );
+
+            if (existingUser) {
+                return new Response(JSON.stringify(existingUser), {
+                    status: 200,
+                    headers: headersCors
+                });
+            } else {
+                return new Response(JSON.stringify({ message: "Incorrect username or password" }), {
+                    status: 401,
+                    headers: headersCors
+                });
+            }
+        }
+    }
+
+    // Om endpoint inte matchar något
+    return new Response(JSON.stringify({ message: "Not found" }), {
+        status: 404,
+        headers: headersCors
+    });
 }
 
 Deno.serve(handler);
