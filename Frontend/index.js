@@ -2,6 +2,8 @@ const loginUsername = document.getElementById("login-username");
 const loginPassword = document.getElementById("login-password");
 const loginButton = document.getElementById("login-button");
 const errorMessage = document.getElementById("error-message");
+const loginSection = document.getElementById("login-section");
+const theBanditSection = document.getElementById("the-bandit");
 
 loginButton.addEventListener("click", async function login() {
 
@@ -24,11 +26,11 @@ loginButton.addEventListener("click", async function login() {
             loadTheBandit(user);
         }
         if (response.status === 400) {
-            errorMessage.textContent = "Missing username or password";
+            errorMessage.textContent = "Missing username or password.";
             errorMessage.style.color = "red";
         }
         if (response.status === 401) {
-            errorMessage.textContent = "Incorrect username or password";
+            errorMessage.textContent = "Incorrect username or password.";
             errorMessage.style.color = "red";
         }
 
@@ -36,5 +38,7 @@ loginButton.addEventListener("click", async function login() {
 });
 
 async function loadTheBandit(user) {
-
+    loginSection.style.display = "none";
+    theBanditSection.style.display = "flex";
+    console.log(user);
 }

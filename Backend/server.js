@@ -1,3 +1,6 @@
+import { addUserToDatabase } from "./addUserToDatabase.js"
+
+
 async function handler(request) {
     const url = new URL(request.url);
 
@@ -15,7 +18,6 @@ async function handler(request) {
     }
 
     if (url.pathname === "/login") {
-        console.log("HEJ");
 
         if (request.method === "POST") {
 
@@ -25,7 +27,7 @@ async function handler(request) {
             const user = await request.json();
 
             if (user.username === "" || user.password === "") {
-                return new Response(JSON.stringify({ message: "Missing username or password" }), {
+                return new Response(JSON.stringify({ message: "Missing username or password." }), {
                     status: 400,
                     headers: headersCors
                 });
@@ -41,8 +43,43 @@ async function handler(request) {
                     headers: headersCors
                 });
             } else {
-                return new Response(JSON.stringify({ message: "Incorrect username or password" }), {
+                return new Response(JSON.stringify({ message: "Incorrect username or password." }), {
                     status: 401,
+                    headers: headersCors
+                });
+            }
+        }
+    }
+
+    if (url.pathname === "/create") {
+
+        if (request.method === "POST") {
+
+            const jsonFile = await Deno.readTextFile("./database.json");
+            let userDatabase = await JSON.parse(jsonFile);
+
+            const newUser = await request.json();
+
+            if (newUser.username === "" || newUser.password === "") {
+                return new Response(JSON.stringify({ message: "Missing username or password." }), {
+                    status: 400,
+                    headers: headersCors
+                });
+            }
+
+            const existingUser = userDatabase.find(
+                u => u.username === newUser.username
+            );
+
+            if (existingUser) {
+                return new Response(JSON.stringify({ message: "User already exists." }), {
+                    status: 409,
+                    headers: headersCors
+                });
+            } else {
+                addUserToDatabase(newUser);
+                return new Response(JSON.stringify({ message: "Account has been created." }), {
+                    status: 200,
                     headers: headersCors
                 });
             }
