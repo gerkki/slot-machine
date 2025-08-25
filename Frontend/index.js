@@ -4,6 +4,8 @@ const loginButton = document.getElementById("login-button");
 const errorMessage = document.getElementById("error-message");
 const loginSection = document.getElementById("login-section");
 const theBanditSection = document.getElementById("the-bandit");
+const usernameDisplay = document.getElementById("display-username");
+const balanceDisplay = document.getElementById("display-balance");
 
 loginButton.addEventListener("click", async function login() {
 
@@ -41,4 +43,7 @@ async function loadTheBandit(user) {
     loginSection.style.display = "none";
     theBanditSection.style.display = "flex";
     console.log(user);
+
+    usernameDisplay.textContent = `User: ${user.username}`;
+    balanceDisplay.textContent = `Balance: ${user.balance}`;
 }
